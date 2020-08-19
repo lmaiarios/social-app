@@ -1,0 +1,11 @@
+.topbar{
+    width: 100%;
+    position: fixed;
+    background-color: rgb(63, 63, 246);
+    padding: 10px;
+    z-index: 10;
+}
+
+#home-icon{
+    margin-right: 10px;
+}

@@ -1,0 +1,25 @@
+.sidebar{
+    position: fixed;
+    display: inline-block;
+    height: 90vh;
+    width: 20%;
+    background-color: rgb(49, 49, 146);
+    padding-top: 10vh;
+    z-index: -10;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 0;
+    color: white;
+}
+
+.avatar{
+    border-radius: 50%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
