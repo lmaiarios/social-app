@@ -4,16 +4,18 @@ import TopBar from './components/topbar/topBar';
 import SideBar from './components/sidebar/sideBar';
 import Country from './pages/country/country';
 import Home from './pages/home/home';
+import UserContext from './context/userContext';
+import EditUser from './pages/editUser/editUser';
 
 function App() {
   const [user, setUser] = useState();
-
+  
   const getUser = () => {
     const userData = sessionStorage.getItem('user');
 
     if (userData){
-      console.log(JSON.parse(userData));
-      setUser(JSON.parse(userData));
+      const data = JSON.parse(userData);
+      setUser(data);
     }
 
     else{
@@ -26,7 +28,6 @@ function App() {
           const result = data.results[0];
           setUser(result);
           sessionStorage.setItem('user', JSON.stringify(result));
-          console.log(result);
         }
       )
     }
@@ -37,30 +38,39 @@ function App() {
   )
 
   return (
-    <div className="App">
-      <TopBar />
-      {
-        user &&
-        <SideBar
-          picture={user.picture.medium}
-          name={user.name.title+' '+user.name.first+' '+user.name.last}
-          phone={user.phone}
-          email={user.email}
-          city={user.location.city}
-          country={user.location.country}
-        />
-      }
-      <div className='page-container'>
-        <Switch>
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route path='/country/:country_name' component={Country} />
+    <UserContext.Provider value={{user, setUser}}>
+        <div className="App">
+        <TopBar />
+        {
+          user &&
+          <>
+            <SideBar
+              picture={user.picture.medium}
+              name={user.name.title+' '+user.name.first+' '+user.name.last}
+              phone={user.phone}
+              email={user.email}
+              city={user.location.city}
+              country={user.location.country}
+              latitude={user.location.coordinates.latitude}
+              longitude={user.location.coordinates.longitude}
+            />
           
-        </Switch>
-      </div>        
-      
-    </div>
+            <div className='page-container'>
+              <Switch>
+                <Route exact path='/'>
+                  <Home/>
+                </Route>
+                <Route path='/country/:country_name' component={Country} />
+                <Route path='/edit'>
+                  <EditUser />
+                </Route>
+                
+              </Switch>
+            </div> 
+          </>       
+        }
+      </div>
+    </UserContext.Provider>
   );
 }
 

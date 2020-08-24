@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import UserContext from '../../../context/userContext';
 import './post.css';
 
 function Post({fullname, picture, children}){
@@ -24,9 +25,9 @@ const Header = ({fullname, picture}) => {
 
 const PostBody = ({children}) => {
     const reactions = ['thumbs-up', 'heart', 'poo', 'smile-wink', 'sad-cry']
-
     return (
         <div className='post-body'>
+        
             {children}
             <div className='reaction-container'>
                 {
@@ -43,6 +44,8 @@ const PostFooter = () => {
     const [comments, setComments] = useState([]);
     const [text, setText] = useState('');
 
+    const {user} = useContext(UserContext);
+
     const postComment = (e) => {
         e.preventDefault();
 
@@ -55,12 +58,13 @@ const PostFooter = () => {
     return (
         <div className='post-footer'>
             {comments.map(
-                (comment, id) => <Comment
+                (comment, id, arr) => <Comment
                                     key={id}
                                     content={comment.content}
                                     time={comment.time}
-                                    fullname='Elizabeth Morris'
-                                    picture='https://randomuser.me/api/portraits/thumb/women/51.jpg'
+                                    fullname={user.name.first+' '+user.name.last}
+                                    picture={user.picture.thumbnail}
+                                    isLast={id === (arr.length-1)}
                                 />
             )}
             <form onSubmit={postComment}>
@@ -76,12 +80,13 @@ const PostFooter = () => {
     );
 }
 
-const Comment = ({picture, fullname, content, time}) => {
+const Comment = ({picture, fullname, content, time, isLast}) => {
     return (
         <div className='comment'>
             <Header picture={picture} fullname={fullname} />
             <p className='comment-content'>{content}</p>
             <p className='comment-time'>{time}</p>
+            <hr style={{display: isLast ? 'none' : null}}/>
         </div>
     );
 }

@@ -14,7 +14,7 @@ html, body {
   justify-content: center;
   margin: 0;
   padding: 0;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 *{
